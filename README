@@ -1,0 +1,7 @@
+Usage
+=====
+
+Copy pages/template.html to pages/<app>.html and modify to process your stream.sh
+Copy and modify streamcommet.sh
+Run streamcommet.sh
+

@@ -1,0 +1,86 @@
+<html>
+<script>
+/*
+var currPos = 0;
+function parseResponse(response) {
+  var newText = response.substring(currPos);
+  var lines = newText.split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    console.log(lines[i]);
+  }
+  currPos = response.length;
+}
+*/
+String.prototype.rtrim=function(){return this.replace(/\s+$/,'');}
+
+
+var imgBuffer = null;
+
+function completeImage() {
+  if (imgBuffer != null) {
+    var cache = imgBuffer;
+      var img = new Image();
+      img.style.border = "solid red 2px";
+      console.log(imgBuffer.length);
+      img.src = imgBuffer;
+      document.body.appendChild(img);
+      var aTag = document.createElement('a');
+      aTag.innerHTML = "<br>";
+      document.body.appendChild(aTag);
+      //document.getElementById("lastimg").src = imgBuffer;
+    imgBuffer = null;
+  } else {
+  }
+}
+
+function doRequest() {
+  var request = new XMLHttpRequest(); 
+  request.multipart = 1;
+  request.open("GET","http://localhost:3333",true);
+  request.onload = function(a) {
+    alert(request.response);
+    var response = request.response.split("\n")[0].rtrim();
+    /./.exec(" ");
+    // I/Gecko   ( 9589): IMG: 
+    //var match = /^I\/Gecko.*/(.*\): IMG:(.*)$/.exec(url);
+    var match = /^.*IMG: (.*)$/.exec(response);
+    if (match) {
+      if (match[1].indexOf(" ") != -1) {
+        console.log("SPACE");
+      }
+      if (match[1].indexOf("\n") != -1) {
+        console.log("NEWLINE");
+      }
+      if (match[1].indexOf("data:image/png;base64,") == 0) {
+        completeImage();
+        imgBuffer = "";
+      }
+      if (imgBuffer != null) {
+        imgBuffer += match[1];
+      } else {
+        console.log("Bad start");
+      }
+    } else {
+      if (response.indexOf("IMG") != -1) {
+        console.log("MISS: " + response);
+        for (var i = 0; i < response.length; i++) {
+          console.log("Char '" + response[i] + "'");
+        }
+      }
+      completeImage();
+    }
+
+  };
+  request.onprogress = function(event) {
+  }
+  request.send();
+}
+ 
+
+</script>
+<body style="white-space: pre;" onload="doRequest()">
+
+Last line:<img id="lastimg"></a>
+Last line:<a id="lastline"></a>
+</body>
+</html>

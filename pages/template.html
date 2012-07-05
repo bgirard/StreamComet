@@ -1,0 +1,21 @@
+<html>
+<script>
+String.prototype.rtrim=function(){return this.replace(/\s+$/,'');}
+
+function doRequest() {
+  var request = new XMLHttpRequest(); 
+  request.multipart = 1;
+  request.open("GET","http://localhost:3333",true);
+  request.onload = function(a) {
+    var response = request.response.split("\n")[0].rtrim();
+
+  };
+  request.send();
+}
+ 
+
+</script>
+<body style="white-space: pre;" onload="doRequest()">
+Stream commet
+</body>
+</html>
